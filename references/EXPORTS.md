@@ -1,6 +1,8 @@
-# `@objectifthunes/whiteboard` — Exports
+# `@objectifthunes/whiteboard` — Exports (0.3.0)
 
-Full copy-pasteable import block, then per-export prop signatures.
+Copy-pasteable import block, then per-export prop signatures.
+
+> For a live demo of every export with the matching code block, see https://objectifthunes.github.io/whiteboard-demo/components/.
 
 ## One-shot import block
 
@@ -43,7 +45,7 @@ import {
   CoordGrid,
   CoordInput,
 
-  // Status / alerts
+  // Feedback
   Alert,
   Pill,
   Chip,
@@ -63,8 +65,7 @@ import {
 
   // Typography
   PageTitle,
-  StoryTitle,
-  AssetTitle,
+  CardTitle,
   SectionTitle,
   SectionDescription,
   MutedText,
@@ -104,10 +105,7 @@ import {
   AvatarSkeleton,
   CanvasSkeleton,
   PanelFormSkeleton,
-  StoryCardSkeleton,
-  UserCardSkeleton,
-  UserListSkeleton,
-  AssetCardSkeleton,
+  CardSkeleton,
   PickerGridSkeleton,
   ChoiceGroupSkeleton,
 } from '@objectifthunes/whiteboard'
@@ -132,8 +130,6 @@ import '@objectifthunes/whiteboard/style.css'
 | `minimapLoading` | `boolean` | `false` |
 | `extraActions` | `ReactNode` | — |
 
-Renders the fixed-position pan/zoom canvas. Children are absolute-positioned in world space (typically `<FloatingPanel>`s). Resets store state on unmount.
-
 ### `FloatingPanel`
 
 | Prop | Type | Default |
@@ -149,23 +145,17 @@ Renders the fixed-position pan/zoom canvas. Children are absolute-positioned in 
 | `headerActions` | `ReactNode` | — |
 | `children` | `ReactNode` | — |
 
-Draggable header, body for content, double-click to focus (when `focusable`), tap-tap-to-focus on touch.
-
 ### `Minimap`
 
 | Prop | Type | Default |
 |---|---|---|
 | `loading` | `boolean` | `false` |
 
-Subscribes to `registryVersion` from the store. Click/drag to pan, wheel to zoom, double-click a panel to focus it.
-
 ### `ZoomBar`
 
 | Prop | Type | Default |
 |---|---|---|
 | `extraActions` | `ReactNode` | — |
-
-Zoom in/out, fit, reset positions, snap-to-grid toggle. Rendered by `WhiteboardShell`, exposed for custom shells.
 
 ### `ConfirmDialog`
 
@@ -181,15 +171,11 @@ Zoom in/out, fit, reset positions, snap-to-grid toggle. Rendered by `WhiteboardS
 | `loading` | `boolean` | `false` |
 | `error` | `string \| null` | — |
 
-Portaled. Closes on Escape, backdrop click, or Cancel.
-
 ### `PanelErrorBoundary`
 
 | Prop | Type | Default |
 |---|---|---|
 | `fallbackMessage` | `string` | `'This panel crashed.'` |
-
-Class-based error boundary with Retry.
 
 ## Store & geometry
 
@@ -226,28 +212,18 @@ interface WhiteboardStore {
 Subscribe to `registryVersion` to re-render when panels change. Never subscribe to `panels` alone — the Map is mutated in place.
 
 ### `computeWhiteboardFit(panels, viewportSize, padding?)`
-
-Returns `{ scale, offset } | null` that frames all panels. `padding` defaults to `60`.
-
 ### `computeWhiteboardRectFocus(rect, viewportSize, padding?, maxScale?)`
-
-Returns `{ scale, offset }` framing a single rect. Defaults: `padding=40`, `maxScale=1.5`.
 
 ### `useWhiteboardLayout({ widths, startX?, y?, gap? })`
 
 Returns `{ layout, panelWidth, positions }`. Grid-snapped row layout for the initial panel positions.
 
-### `WHITEBOARD_GRID` / `snapToWhiteboardGrid(n)`
+### Helpers
 
-Grid constant is `20`. The snap helper rounds.
-
-### `usePanelRect(initial)` / `belowPanel(rect, gap?)`
-
-`usePanelRect` returns a `MutableRefObject<PanelRect>` you can pass as `trackRect`. `belowPanel(rect)` returns `{ x: rect.x, y: rect.y + rect.height + gap }` (default gap `WHITEBOARD_GRID`).
-
-### `cn(...args)`
-
-`(string | false | null | undefined)[] → string` — joins truthy class names.
+- `WHITEBOARD_GRID` (= `20`), `snapToWhiteboardGrid(n)` — grid constant + round-to-grid.
+- `usePanelRect(initial)` — `MutableRefObject<PanelRect>` you can pass as `trackRect`.
+- `belowPanel(rect, gap?)` — `{ x: rect.x, y: rect.y + rect.height + gap }`. Default gap = `WHITEBOARD_GRID`.
+- `cn(...args)` — joins truthy class names.
 
 ## Buttons
 
@@ -259,35 +235,35 @@ Grid constant is `20`. The snap helper rounds.
 
 ## Forms
 
-- **`Field`** — `label?`, `htmlFor?`, `hint?`, `error?`, `layout?: 'stack' | 'control'` (default `'stack'`), `as?`. Renders Label + children + hint/error in a column.
+- **`Field`** — `label?`, `htmlFor?`, `hint?`, `error?`, `layout?: 'stack' | 'control'` (default `'stack'`), `as?`.
 - **`Label`** — styled `<label>`. Uppercase, muted, tight letter-spacing.
 - **`Input` / `Textarea` / `Select`** — thin styled wrappers, forward refs.
 - **`CoordGrid`** — 2-column grid for `<CoordInput>`s.
 - **`CoordInput`** — `axis: string` label + numeric input (`type='number'`, `step='0.01'`).
 
-## Status / alerts
+## Feedback
 
 - **`Alert`** — `tone?: 'error' | 'muted' | 'info' | 'success'` (default `'info'`).
 - **`Pill`** — `tone?: 'default' | 'success' | 'warning' | 'danger'`.
-- **`Chip`** — `<span class="chip">`. Becomes interactive when rendered as `<button class="chip">`.
-- **`TagRow`** — `<div class="tag-row">`, flex-wrap row of tiny items.
+- **`Chip`** — `<span class="chip">`. Becomes interactive as `<button class="chip">`.
+- **`TagRow`** — flex-wrap row of tiny items.
 - **`LoadingState`** — `label?: string` (default `'Loading...'`) + spinner.
-- **`GeneratingOverlay`** — `isGenerating`, `children`, `message?`. Backdrop-blur overlay over children when active.
+- **`GeneratingOverlay`** — `isGenerating`, `children`, `message?`. Backdrop-blur over children.
 - **`EmptyState`** — `title`, `description?`, `action?`.
 
 ## Layout
 
 - **`Stack`** — vertical grid, `size?: 'sm' | 'md'` (default `'md'`), `as?`.
 - **`Inline`** — horizontal row, `justify?: 'start' | 'between' | 'end'` (default `'start'`), `as?`.
-- **`TitleRow`** — horizontal row with `justify-content: space-between`.
-- **`SplitLayout`** — `variant: 'element' | 'character' | 'user'`. Two/three-column grid.
-- **`IconText`** — `icon: ReactNode`, `as?` + children. Inline icon + text row.
+- **`TitleRow`** — horizontal row with `space-between`.
+- **`SplitLayout`** — `variant: 'media-content' | 'single' | 'media-content-actions'`. Two- or three-column grid.
+- **`IconText`** — `icon: ReactNode`, `as?` + children.
 - **`PageShell`** — full-viewport centred `<main>`.
 - **`PageCard`** — bordered card under PageShell, `max-width: 380px`.
 
 ## Typography
 
-- **`PageTitle`** (`h1`, 1.1rem), **`StoryTitle`** (`h3`, 0.88rem), **`AssetTitle`** (`p`, with optional `clamp: boolean` for 2-line clamp), **`SectionTitle`** (`span`), **`SectionDescription`** (`p`), **`MutedText`** (`p`, with `size?: 'xs' | 'sm' | 'md'`, default `'sm'`).
+- **`PageTitle`** (`h1`, 1.1rem), **`SectionTitle`** (`span`), **`SectionDescription`** (`p`), **`CardTitle`** (`p`, with optional `clamp: boolean` for 2-line clamp), **`MutedText`** (`p`, with `size?: 'xs' | 'sm' | 'md'`, default `'sm'`).
 
 ## Lists / cards
 
@@ -295,7 +271,7 @@ Grid constant is `20`. The snap helper rounds.
 - **`ItemList`** — vertical list with consistent gap, `as?` (default `'div'`).
 - **`List`** — `<ul>` with `list-reset` (default). `as?`, `reset?: boolean`.
 - **`PickerCard`** — clickable card for picker grids. `as?` (default `'button'`).
-- **`PickerGrid`** — `variant: 'elements' | 'characters' | 'library'`. Responsive grid.
+- **`PickerGrid`** — `minItemWidth?: number` (default `120`). Responsive auto-fill grid.
 - **`ChoiceCard`** — `active?: boolean`. Internal use by `ChoiceGroup`.
 - **`ChoiceGroup<T extends string>`** — `options: ChoiceOption<T>[]`, `value`, `onChange(value)`.
 
@@ -311,7 +287,7 @@ Grid constant is `20`. The snap helper rounds.
 
 ## Panel sections
 
-- **`PanelSection`** — `heading?`, `description?`, `actions?`. Bordered section with optional header row.
+- **`PanelSection`** — `heading?`, `description?`, `actions?`.
 - **`PanelTitle`** — `icon: ComponentType<{size?, className?}>`, `label: string`. Compact title for panel headers.
 
 ## Skeletons
@@ -320,7 +296,11 @@ All take `HTMLAttributes<HTMLDivElement>`; render an animated shimmering bar/box
 
 - **Base:** `Skeleton` (with `radius?: 'sm' | 'md' | 'pill'`, `as?`)
 - **Primitives:** `LineSkeleton` (with `short?`), `TitleSkeleton`, `ButtonSkeleton`, `IconButtonSkeleton`, `InputSkeleton`, `SelectSkeleton`, `TextareaSkeleton`, `ChipSkeleton`, `ThumbSkeleton`, `AvatarSkeleton`, `CanvasSkeleton`
-- **Widgets:** `PanelFormSkeleton` (props: `inputs?`, `showButton?`), `StoryCardSkeleton`, `UserCardSkeleton`, `UserListSkeleton` (with `count?`), `AssetCardSkeleton`, `PickerGridSkeleton` (props: `count?`, `gridClass: string`), `ChoiceGroupSkeleton` (props: `count?`, `withDescription?`)
+- **Composed:**
+  - `PanelFormSkeleton` — `inputs?: number` (default `1`), `showButton?: boolean` (default `true`)
+  - `CardSkeleton` — `withThumb?: boolean` (default `true`), `chipCount?: number` (default `0`), `actionCount?: number` (default `0`)
+  - `PickerGridSkeleton` — `count?: number` (default `8`), `minItemWidth?: number` (default `120`)
+  - `ChoiceGroupSkeleton` — `count?: number` (default `4`), `withDescription?: boolean` (default `false`)
 
 ## Subpath exports
 

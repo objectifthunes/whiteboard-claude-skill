@@ -1,6 +1,6 @@
 ---
 name: whiteboard-ui
-description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, minimap, snap-to-grid, zoom controls, and 40+ themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, StoryTitle, AssetTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, AvatarBadge, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, StoryCardSkeleton, UserCardSkeleton, UserListSkeleton, AssetCardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the demo at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
+description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, a minimap, snap-to-grid, zoom controls, and ~45 themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, CardTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, AvatarBadge, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, CardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the live docs at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
 ---
 
 # Picking up `@objectifthunes/whiteboard` in a blink
@@ -9,13 +9,12 @@ You are helping the user wire up, design with, or extend the `@objectifthunes/wh
 
 ## What it is
 
-- **Package:** `@objectifthunes/whiteboard` (npm, public, current `0.2.7`).
+- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.3.0`**).
 - **Source repo:** `github.com/objectifthunes/whiteboard` (private).
-- **Live demo:** https://objectifthunes.github.io/whiteboard-demo/ — every export shown in a real panel, source visible via the `screenshots.mjs` driver and copy-able `<CodeBlock>` inside each panel.
-- **Demo repo:** `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
-- **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (≈28 KB raw / 6 KB gzip) plus 42 KB / 10 KB JS.
+- **Live docs:** **https://objectifthunes.github.io/whiteboard-demo/** — multi-page Next.js docs site with a live demo + copy-pasteable code block for every export. **Always link the user there for prop details rather than re-deriving them.** The demo source is at `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
+- **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (~28 KB raw / 6 KB gzip) plus 41 KB / 10 KB JS.
 - **Voice:** light-default neutral surfaces, hairline borders, tiny font scale (`--wb-fs-*` starts at 0.64rem), gridded canvas with floating panels, soft `0 8px 24px` shadows. Dark theme via `[data-theme="dark"]`.
-- **Shape:** **6 whiteboard primitives + 4 store/hooks + 40+ UI primitives = 50+ exports**.
+- **Shape:** **6 whiteboard primitives + 4 store/hooks + ~40 UI primitives = ~50 exports** (see `references/EXPORTS.md`).
 
 ## The mental model — read first
 
@@ -29,14 +28,10 @@ If the user wants "a Figma-like canvas with widgets" or "a studio workspace" or 
 
 ## Two worked-example screens
 
-Before composing your own surface, look at these two patterns in the demo (`github.com/objectifthunes/whiteboard-demo/src/app/page.tsx`):
-
 | Screen | Shape | When to copy it |
 |---|---|---|
-| **Showcase canvas** | `<WhiteboardShell>` with 10 `<FloatingPanel>`s laid out by `useWhiteboardLayout` | The user wants a multi-tool studio, inspector palette, or any surface where a user moves several editing panels around. Pattern: `useWhiteboardLayout({ widths, startX, y, gap })` → spread positions into panels. |
-| **Inline panel kit** | `<PageShell>` → `<PageCard>` → `<Stack>` of `<Field>` / `<Button>` / `<Alert>` | The user wants a single auth card, settings page, or tiny tool UI. Pattern: `PageShell` centres a card; `PageCard` is the bordered surface; `Stack` for vertical rhythm. **No WhiteboardShell needed.** |
-
-When extending or modifying a surface, start from the matching pattern and edit — don't reinvent.
+| **Studio canvas** | `<WhiteboardShell>` with multiple `<FloatingPanel>`s laid out by `useWhiteboardLayout` | The user wants a multi-tool studio, inspector palette, or any surface where a user moves several editing panels around. Pattern: `useWhiteboardLayout({ widths, startX, y, gap })` → spread positions into panels. See `/components/canvas` and `/components/store` on the live docs. |
+| **Inline panel kit** | `<PageShell>` → `<PageCard>` → `<Stack>` of `<Field>` / `<Button>` / `<Alert>` | The user wants a single auth card, settings page, or tiny tool UI. Pattern: `PageShell` centres a card; `PageCard` is the bordered surface; `Stack` for vertical rhythm. **No WhiteboardShell needed.** See `/components/layout`. |
 
 ## The five-step wire-up
 
@@ -49,15 +44,13 @@ pnpm create next-app@latest <name> --ts --tailwind --eslint --app --src-dir --im
 cd <name>
 ```
 
-Produces Next 16 + React 19 + Tailwind v4 + Turbopack + App Router. The whiteboard package is React-version-agnostic (peer `>=18`) so React 19 is fine.
+Next 16 + React 19 + Tailwind v4 + Turbopack + App Router. Whiteboard is React-version-agnostic (peer `>=18`).
 
 ### 2. Install the library + peers
 
 ```bash
 pnpm add @objectifthunes/whiteboard zustand
 ```
-
-`zustand` is a peer dep. `react`/`react-dom` come from the scaffold. **Do not install Tailwind components on top** — the library brings its own styles.
 
 ### 3. Import the stylesheet **once** at the root
 
@@ -67,7 +60,7 @@ import '@objectifthunes/whiteboard/style.css'
 import './globals.css'   // your overrides (optional)
 ```
 
-The stylesheet is side-effecting and defines all `--wb-*` tokens on `:root` + a `[data-theme="dark"]` override.
+Side-effecting CSS. Defines all `--wb-*` tokens on `:root` + a `[data-theme="dark"]` override.
 
 ### 4. Mark canvas pages as client components
 
@@ -83,7 +76,7 @@ For static export (`output: 'export'`), gate first render behind a mounted flag 
 ```tsx
 const [mounted, setMounted] = useState(false)
 useEffect(() => { setMounted(true) }, [])
-if (!mounted) return <div className="demo-root" />
+if (!mounted) return null
 ```
 
 ### 5. Compose a canvas
@@ -96,7 +89,7 @@ if (!mounted) return <div className="demo-root" />
 </WhiteboardShell>
 ```
 
-Or for a non-canvas surface, skip the shell entirely:
+Non-canvas surfaces skip the shell entirely:
 
 ```tsx
 <PageShell>
@@ -109,9 +102,9 @@ Or for a non-canvas surface, skip the shell entirely:
 </PageShell>
 ```
 
-## Export catalogue (50+)
+## Export catalogue
 
-See [`references/EXPORTS.md`](references/EXPORTS.md) for the full copy-pasteable import block, prop signatures, and one-liner per export. Quick map:
+See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable import block and per-export prop signatures. Quick map:
 
 **Whiteboard primitives (6):** `WhiteboardShell`, `FloatingPanel`, `Minimap`, `ZoomBar`, `ConfirmDialog`, `PanelErrorBoundary`.
 
@@ -121,19 +114,19 @@ See [`references/EXPORTS.md`](references/EXPORTS.md) for the full copy-pasteable
 
 **Forms:** `Field`, `Label`, `Input`, `Textarea`, `Select`, `CoordGrid`, `CoordInput`.
 
-**Status / alerts:** `Alert`, `Pill`, `Chip`, `TagRow`, `LoadingState`, `GeneratingOverlay`, `EmptyState`.
+**Feedback:** `Alert`, `Pill`, `Chip`, `TagRow`, `LoadingState`, `GeneratingOverlay`, `EmptyState`.
 
 **Layout:** `Stack`, `Inline`, `TitleRow`, `SplitLayout`, `IconText`, `PageShell`, `PageCard`.
 
-**Typography:** `PageTitle`, `StoryTitle`, `AssetTitle`, `SectionTitle`, `SectionDescription`, `MutedText`.
+**Typography:** `PageTitle`, `CardTitle`, `SectionTitle`, `SectionDescription`, `MutedText`.
 
 **Lists / cards:** `ItemCard`, `ItemList`, `List`, `PickerCard`, `PickerGrid`, `ChoiceCard`, `ChoiceGroup`.
 
-**Navigation:** `VerticalToolbar`, `AvatarBadge`, `BackLink` *(no — not exported, build with `<a>`)*.
+**Navigation:** `VerticalToolbar`, `AvatarBadge`.
 
 **Media:** `CanvasStage`, `ImageThumb`.
 
-**Skeletons:** `Skeleton`, `LineSkeleton`, `TitleSkeleton`, `ButtonSkeleton`, `IconButtonSkeleton`, `InputSkeleton`, `SelectSkeleton`, `TextareaSkeleton`, `ChipSkeleton`, `ThumbSkeleton`, `AvatarSkeleton`, `CanvasSkeleton`, `PanelFormSkeleton`, `StoryCardSkeleton`, `UserCardSkeleton`, `UserListSkeleton`, `AssetCardSkeleton`, `PickerGridSkeleton`, `ChoiceGroupSkeleton`.
+**Skeletons:** `Skeleton`, `LineSkeleton`, `TitleSkeleton`, `ButtonSkeleton`, `IconButtonSkeleton`, `InputSkeleton`, `SelectSkeleton`, `TextareaSkeleton`, `ChipSkeleton`, `ThumbSkeleton`, `AvatarSkeleton`, `CanvasSkeleton`, `PanelFormSkeleton`, `CardSkeleton`, `PickerGridSkeleton`, `ChoiceGroupSkeleton`.
 
 **Panel-section helpers:** `PanelSection`, `PanelTitle`.
 
@@ -152,14 +145,6 @@ Override tokens on `:root` or scope to `[data-theme="dark"]`. The package define
   --wb-border: #e5e7eb;
   --wb-primary: #1f2937;
   --wb-danger: #dc2626;
-}
-
-[data-theme='dark'] {
-  --wb-bg: #0f1117;
-  --wb-surface: #1a1d27;
-  --wb-text: #e5e7eb;
-  --wb-border: #2d3041;
-  --wb-primary: #e5e7eb;
 }
 ```
 
@@ -186,8 +171,12 @@ useEffect(() => { document.documentElement.dataset.theme = theme }, [theme])
 
 7. **Zustand v5 not tested.** Peer says `>=4`, but the package is built and tested against v4. v5 may work — if you see store issues, downgrade to v4 first.
 
-8. **`PickerGridSkeleton` takes a raw class string.** Inconsistent with `PickerGrid`'s typed `variant` prop. Pass `'picker-grid--elements'` / `'picker-grid--characters'` / `'picker-grid--library'`.
+8. **`SplitLayout` variants are shape-named.** Use `'media-content'`, `'single'`, or `'media-content-actions'`. The pre-0.3.0 names (`element`, `character`, `user`) are gone.
 
-9. **`ConfirmDialog` loading label.** As of 0.2.7, the loading state defaults to `${confirmLabel}…`. Pre-0.2.7 was hardcoded `"Deleting..."` — bump if you see it.
+9. **`PickerGrid` takes `minItemWidth: number`.** It used to take `variant: 'elements' | 'characters' | 'library'` — that's gone. Pass the px width you want each cell to start at.
 
-10. **Theming the `OverlayIconButton`.** It uses `color-mix` of `--wb-surface` and `--wb-surface-muted` for the chrome. If you want a stronger glassy effect, override `.overlay-icon-btn` in your own CSS — the component's classes are deterministic.
+10. **`AssetTitle` and `StoryTitle` are gone.** Use `CardTitle` for AssetTitle's role; for StoryTitle, pick `PageTitle` or roll a custom heading.
+
+11. **Composed widget skeletons are gone.** `StoryCardSkeleton`, `UserCardSkeleton`, `UserListSkeleton`, `AssetCardSkeleton` were removed. Use the new `<CardSkeleton withThumb chipCount={N} actionCount={M} />` to compose your own.
+
+12. **Theming the `OverlayIconButton`.** It uses `color-mix` of `--wb-surface` and `--wb-surface-muted` for the chrome. If you want a stronger glassy effect, override `.overlay-icon-btn` in your own CSS.
