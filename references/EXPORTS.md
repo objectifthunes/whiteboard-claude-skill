@@ -44,6 +44,7 @@ import {
   ButtonRow,
   PanelCloseButton,
   ThemeToggle,
+  ThemeProvider, useTheme,
   OverlayIconButton,
 
   // Forms
@@ -244,7 +245,9 @@ Returns `{ layout, panelWidth, positions }`. Grid-snapped row layout for the ini
 - **`Button`** — `variant?: 'primary' | 'secondary' | 'danger'`, `fullWidth?`, `iconOnly?`, `loading?`, `loadingText?`. Defaults to `type='button'`. Emits `wb-btn` classes.
 - **`ButtonRow`** — equal-sized children via `flex: 1 1 0`. `as?: ElementType` (default `'div'`).
 - **`PanelCloseButton`** — pre-built secondary button with `X` icon. Props: `onClick`, `label?` (default `'Close'`).
-- **`ThemeToggle`** — `theme`, `onToggle`, `lightIcon?`, `darkIcon?`, `className?`. Controlled; you set `data-theme` yourself.
+- **`ThemeToggle`** — `theme`, `onToggle`, `lightIcon?`, `darkIcon?`, `className?`. Controlled; pair with `ThemeProvider`/`useTheme` (or set `data-theme` yourself).
+- **`ThemeProvider`** (0.7.0) — `defaultTheme?: 'light' | 'dark'`, owns theme state: persists to `localStorage('wb-theme')`, keeps `data-theme` on `<html>` and `<body>` in sync. SSR: server renders `defaultTheme`; pair with `data-theme` on `<body>` + `suppressHydrationWarning` on `<html>`.
+- **`useTheme()`** (0.7.0) — `{ theme, setTheme, toggleTheme }` from the nearest `ThemeProvider`; throws outside one.
 - **`OverlayIconButton`** — secondary icon-only button absolutely positioned over a canvas. `placement?: 'top-right' | 'bottom-left' | 'bottom-right'`. Stops pointer/wheel/context propagation by default.
 
 ## Forms
