@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.3.0)
+# `@objectifthunes/whiteboard` — Exports (0.4.0)
 
 Copy-pasteable import block, then per-export prop signatures.
 
@@ -29,6 +29,13 @@ import {
   belowPanel,
   cn,
 
+  // Chrome & overlays (0.4)
+  Toolbar,
+  Surface,
+  Tooltip,
+  Kbd,
+  Divider,
+
   // Buttons
   Button,
   ButtonRow,
@@ -37,6 +44,10 @@ import {
   OverlayIconButton,
 
   // Forms
+  Checkbox,
+  Switch,
+  Slider,
+  NumberField,
   Field,
   Label,
   Input,
@@ -313,3 +324,71 @@ All take `HTMLAttributes<HTMLDivElement>`; render an animated shimmering bar/box
 ```
 
 Only one stylesheet, one entry point. No deep imports.
+
+## New in 0.4.0
+
+### `Checkbox` / `Switch`
+```ts
+interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  label?: ReactNode   // sentence-case row text
+  hint?: ReactNode    // muted inline addition
+}
+```
+Full-width labeled rows. `Switch` renders a sliding track (`role="switch"`), same props.
+
+### `Slider`
+```ts
+interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'> {
+  label?: ReactNode
+  display?: ReactNode          // right-aligned readout; defaults to value
+  value: number
+  onChange: (value: number) => void
+}
+```
+
+### `NumberField`
+```ts
+interface NumberFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'> {
+  label?: ReactNode
+  hint?: ReactNode
+  value: number
+  onChange: (value: number) => void   // clamped to [min, max]; NaN swallowed
+}
+```
+
+### `Toolbar`
+```ts
+interface ToolbarProps extends HTMLAttributes<HTMLElement> {
+  position?: 'top' | 'bottom' | 'static'   // top = fixed + centered (default)
+  end?: ReactNode                          // trailing actions after a wider gap
+}
+```
+
+### `Surface`
+```ts
+interface SurfaceProps extends HTMLAttributes<HTMLElement> {
+  as?: ElementType
+  padding?: 'none' | 'sm' | 'md'
+}
+```
+The plain floating overlay box (`--wb-surface` + border + radius-lg + soft shadow). For overlay chrome outside a `WhiteboardShell`.
+
+### `Tooltip`
+```ts
+interface TooltipProps extends HTMLAttributes<HTMLSpanElement> {
+  label: ReactNode
+  placement?: 'top' | 'bottom'
+  children: ReactNode
+}
+```
+CSS-only; shows on hover and keyboard focus. No portal.
+
+### `Kbd`
+`HTMLAttributes<HTMLElement>` — monospace key chip: `<Kbd>esc</Kbd>`.
+
+### `Divider`
+```ts
+interface DividerProps extends HTMLAttributes<HTMLElement> {
+  orientation?: 'horizontal' | 'vertical'
+}
+```
