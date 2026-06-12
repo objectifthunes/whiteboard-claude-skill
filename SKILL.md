@@ -9,7 +9,7 @@ You are helping the user wire up, design with, or extend the `@objectifthunes/wh
 
 ## What it is
 
-- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.6.0`**).
+- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.6.2`**).
 - **Source repo:** `github.com/objectifthunes/whiteboard` (private).
 - **Live docs:** **https://objectifthunes.github.io/whiteboard-demo/** — multi-page Next.js docs site with a live demo + copy-pasteable code block for every export. **Always link the user there for prop details rather than re-deriving them.** The demo source is at `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
 - **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (~28 KB raw / 6 KB gzip) plus 41 KB / 10 KB JS.

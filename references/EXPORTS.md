@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.6.0)
+# `@objectifthunes/whiteboard` — Exports (0.6.2)
 
 Copy-pasteable import block, then per-export prop signatures.
 
