@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.6.2)
+# `@objectifthunes/whiteboard` — Exports (0.7.0)
 
 Copy-pasteable import block, then per-export prop signatures.
 
@@ -355,7 +355,7 @@ interface NumberFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, '
   label?: ReactNode
   hint?: ReactNode
   value: number
-  onChange: (value: number) => void   // realtime, clamped to [min, max]; empty/0/NaN never emitted — previous value kept, restored on blur (0.6.2)
+  onChange: (value: number) => void   // realtime, clamped to [min, max]; empty/0/NaN never emitted — previous value kept, restored on blur (0.7.0)
 }
 ```
 
