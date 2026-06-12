@@ -1,6 +1,6 @@
 ---
 name: whiteboard-ui
-description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, a minimap, snap-to-grid, zoom controls, and ~55 themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, CardTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, Toolbar, AvatarBadge, Checkbox, Switch, Slider, NumberField, Surface, Tooltip, Kbd, Divider, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, CardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the live docs at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
+description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, a minimap, snap-to-grid, zoom controls, and ~55 themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, CardTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, Toolbar, AvatarBadge, Checkbox, Switch, Slider, NumberField, Surface, Tooltip, Kbd, Divider, Draggable, DraggableSurface, resetDraggables, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, CardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the live docs at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
 ---
 
 # Picking up `@objectifthunes/whiteboard` in a blink
@@ -9,7 +9,7 @@ You are helping the user wire up, design with, or extend the `@objectifthunes/wh
 
 ## What it is
 
-- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.4.0`**).
+- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.5.0`**).
 - **Source repo:** `github.com/objectifthunes/whiteboard` (private).
 - **Live docs:** **https://objectifthunes.github.io/whiteboard-demo/** — multi-page Next.js docs site with a live demo + copy-pasteable code block for every export. **Always link the user there for prop details rather than re-deriving them.** The demo source is at `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
 - **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (~28 KB raw / 6 KB gzip) plus 41 KB / 10 KB JS.
@@ -116,7 +116,7 @@ See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable impo
 
 **Feedback:** `Alert`, `Pill`, `Chip`, `TagRow`, `LoadingState`, `GeneratingOverlay`, `EmptyState`, `Tooltip`.
 
-**Layout:** `Stack`, `Inline`, `TitleRow`, `SplitLayout`, `IconText`, `PageShell`, `PageCard`, `Surface`, `Divider`.
+**Layout:** `Stack`, `Inline`, `TitleRow`, `SplitLayout`, `IconText`, `PageShell`, `PageCard`, `Surface`, `Divider`, `Draggable`, `DraggableSurface` (+ `resetDraggables()`).
 
 **Typography:** `PageTitle`, `CardTitle`, `SectionTitle`, `SectionDescription`, `MutedText`, `Kbd`.
 
@@ -130,7 +130,11 @@ See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable impo
 
 **Panel-section helpers:** `PanelSection`, `PanelTitle`.
 
-## New in 0.4 — settings-panel primitives & overlay chrome
+## New in 0.5 — draggable overlay chrome
+
+`Draggable` (bare) and `DraggableSurface` (Surface + drag) give overlay chrome screen-space dragging **without a WhiteboardShell**. Key design: keep the caller's CSS anchoring (top/right/bottom/left, percentage centring) — the drag is a `translate()` delta on top, so layouts stay responsive and "reset" is just delta = 0. Behaviour: drags from any non-interactive area (inputs/buttons/canvases inside keep their pointer behaviour; opt out areas with `data-wb-nodrag`); snaps to `WHITEBOARD_GRID` on release and honours the global `whiteboard-snap-now` event; persists per `id` in localStorage (`persist={false}` to disable); double-click an empty area resets one element, `resetDraggables()` resets all. When an anchored wrapper uses its own transform (e.g. `-translate-x-1/2` centring), put the Draggable INSIDE the wrapper, not on it — the delta transform would override the centring.
+
+ — settings-panel primitives & overlay chrome
 
 Added after building a real app (a 3D floor-plan tool) on the kit:
 

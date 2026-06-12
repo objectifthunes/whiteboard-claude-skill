@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.4.0)
+# `@objectifthunes/whiteboard` — Exports (0.5.0)
 
 Copy-pasteable import block, then per-export prop signatures.
 
@@ -32,6 +32,9 @@ import {
   // Chrome & overlays (0.4)
   Toolbar,
   Surface,
+  Draggable,
+  DraggableSurface,
+  resetDraggables,
   Tooltip,
   Kbd,
   Divider,
@@ -392,3 +395,17 @@ interface DividerProps extends HTMLAttributes<HTMLElement> {
   orientation?: 'horizontal' | 'vertical'
 }
 ```
+
+## New in 0.5.0
+
+### `Draggable` / `DraggableSurface`
+```ts
+interface DraggableProps extends HTMLAttributes<HTMLDivElement> {
+  id: string          // keys persistence + the reset registry
+  snap?: boolean      // grid-snap on release (default true)
+  persist?: boolean   // localStorage per id (default true)
+  disabled?: boolean
+}
+// DraggableSurface adds: padding?: 'none' | 'sm' | 'md'
+```
+Screen-space drag as a translate() delta over the caller's own CSS anchoring. `resetDraggables(): void` resets every mounted instance.
