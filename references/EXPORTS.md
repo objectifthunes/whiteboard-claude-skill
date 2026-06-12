@@ -355,7 +355,7 @@ interface NumberFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, '
   label?: ReactNode
   hint?: ReactNode
   value: number
-  onChange: (value: number) => void   // clamped to [min, max]; NaN swallowed
+  onChange: (value: number) => void   // realtime, clamped to [min, max]; empty/0/NaN never emitted — previous value kept, restored on blur (0.6.2)
 }
 ```
 
