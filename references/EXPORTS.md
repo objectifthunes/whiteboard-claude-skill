@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.5.0)
+# `@objectifthunes/whiteboard` — Exports (0.6.0)
 
 Copy-pasteable import block, then per-export prop signatures.
 
@@ -380,7 +380,7 @@ The plain floating overlay box (`--wb-surface` + border + radius-lg + soft shado
 ```ts
 interface TooltipProps extends HTMLAttributes<HTMLSpanElement> {
   label: ReactNode
-  placement?: 'top' | 'bottom'
+  placement?: 'top' | 'bottom' | 'left' | 'right'
   children: ReactNode
 }
 ```
