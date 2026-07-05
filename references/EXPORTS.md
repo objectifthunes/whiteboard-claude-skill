@@ -1,4 +1,4 @@
-# `@objectifthunes/whiteboard` — Exports (0.7.0)
+# `@objectifthunes/whiteboard` — Exports (0.8.0)
 
 Copy-pasteable import block, then per-export prop signatures.
 
@@ -123,9 +123,65 @@ import {
   CardSkeleton,
   PickerGridSkeleton,
   ChoiceGroupSkeleton,
+
+  // Dashboard kit (0.8)
+  DashboardShell,
+  Sidebar,
+  SidebarBrand,
+  activeSidebarHref,
+  TopBar,
+  TopBarLink,
+  Page,
+  PageHeader,
+  PageBlock,
+  Eyebrow,
+  ContentCard,
+  StatCard,
+  FormGrid,
+  FormActions,
+  FilterTabs,
+  ToggleChip,
+  IconButton,
+  RowCard,
+  RowSkeleton,
+  ListSkeleton,
+  ListHeaderRow,
+  SearchBar,
+  LoadMoreButton,
+  ButtonLink,
+  NoteBar,
+  StickyBar,
+
+  // Dashboard kit (0.8)
+  DashboardShell,
+  Sidebar,
+  SidebarBrand,
+  activeSidebarHref,
+  TopBar,
+  TopBarLink,
+  Page,
+  PageHeader,
+  PageBlock,
+  Eyebrow,
+  ContentCard,
+  StatCard,
+  FormGrid,
+  FormActions,
+  FilterTabs,
+  ToggleChip,
+  IconButton,
+  RowCard,
+  RowSkeleton,
+  ListSkeleton,
+  ListHeaderRow,
+  SearchBar,
+  LoadMoreButton,
+  ButtonLink,
+  NoteBar,
+  StickyBar,
 } from '@objectifthunes/whiteboard'
 
-import type { PanelRect, WhiteboardStore, ChoiceOption } from '@objectifthunes/whiteboard'
+import type { PanelRect, WhiteboardStore, ChoiceOption, SidebarGroup, SidebarItem } from '@objectifthunes/whiteboard'
 ```
 
 ## CSS
@@ -412,3 +468,175 @@ interface DraggableProps extends HTMLAttributes<HTMLDivElement> {
 // DraggableSurface adds: padding?: 'none' | 'sm' | 'md'
 ```
 Screen-space drag as a translate() delta over the caller's own CSS anchoring. `resetDraggables(): void` resets every mounted instance.
+
+## Dashboard kit (0.8.0)
+
+Docs live under the "Whiteboard Dashboard" section of the demo site; the canvas model is under "Whiteboard SaaS". Same package, no extra install.
+
+### `DashboardShell`
+```ts
+{ sidebar: ReactNode; topbar?: ReactNode; children: ReactNode }
+// sidebar+main grid, min-height 100vh, single column under 880px
+```
+
+### `Sidebar` / `SidebarBrand` / `activeSidebarHref`
+```ts
+interface SidebarItem { href: string; name: string; icon?: ReactNode; badge?: ReactNode }
+interface SidebarGroup { label: string; items: SidebarItem[] }
+// Sidebar
+{ brand?: ReactNode; groups: SidebarGroup[]; activeHref?: string; footer?: ReactNode;
+  renderLink?: (item, props: { className: string; children: ReactNode }) => ReactNode }
+// default renderLink is a plain <a>; Next users: (item, props) => <Link {...props} href={item.href} />
+// SidebarBrand
+{ href?: string; mark: ReactNode; eyebrow?: string; name: string; meta?: string; renderLink? }
+// activeSidebarHref(groups, pathname): string | undefined — longest matching href wins
+```
+
+### `TopBar` / `TopBarLink`
+```ts
+// TopBar
+{ crumb: ReactNode; actions?: ReactNode }   // sticky, blurred backdrop
+// TopBarLink — ButtonHTMLAttributes; quiet mono text button
+```
+
+### `Page` / `PageHeader` / `PageBlock` / `Eyebrow`
+```ts
+Page      { children }                          // grid gap 2rem + bottom padding for StickyBar
+PageHeader{ eyebrow: string; title: string; lede?: string }
+PageBlock { title: string; children }
+Eyebrow   { icon?: ReactNode; children }        // uppercase mono label
+```
+
+### `ContentCard` / `StatCard`
+```ts
+ContentCard { title?: ReactNode; children; style? }   // bordered surface, grid gap
+StatCard {
+  title: ReactNode; pill?: ReactNode; pillTone?: 'success'|'warning'|'danger'|'default'
+  value: ReactNode; sub?: ReactNode; children?: ReactNode; actions?: ReactNode
+}
+```
+
+### `FormGrid` / `FormActions` / `FilterTabs` / `ToggleChip` / `IconButton`
+```ts
+FormGrid    { cols?: 2 | 3; children }          // 1 column under 880px
+FormActions { children }                        // right-aligned action row
+FilterTabs<T extends string> { options: {value:T; label:string}[]; value: T; onChange(v:T) }
+ToggleChip  { active: boolean; onClick(); children }
+IconButton  { icon: ReactNode; label: string; variant?; onClick?; disabled?; loading? }
+```
+
+### `RowCard` / `RowSkeleton` / `ListSkeleton` / `ListHeaderRow`
+```ts
+RowCard      { title; detail?; leading?; actions? }
+RowSkeleton  { withDetail?: boolean; actionCount?: number }  // EXACT RowCard geometry
+ListSkeleton { rows?: number } & RowSkeletonProps
+ListHeaderRow{ title; actions? }
+```
+
+### `SearchBar` / `LoadMoreButton` / `ButtonLink`
+```ts
+SearchBar      { value: string; onChange(v: string); label?; placeholder? }  // full-width
+LoadMoreButton { cursor: string | null | undefined; loading: boolean; onClick(); label? } // null cursor -> renders nothing
+ButtonLink     { as?: ElementType; variant?: 'primary'|'secondary'|'danger' } & AnchorHTMLAttributes
+```
+
+### `NoteBar` / `StickyBar`
+```ts
+NoteBar   { tone?: 'info'|'success'|'error'|'muted'; onDismiss(); children }  // mount once, clear on navigation
+StickyBar { children }  // position: fixed bottom; left offset = --wb-dash-sidebar-w
+```
+
+### Dashboard tokens
+```css
+:root {
+  --wb-font-mono: ui-monospace, ...;
+  --wb-dash-sidebar-w: 232px;
+  --wb-dash-content-max: 760px;
+}
+```
+
+## Dashboard kit (0.8.0)
+
+Docs live under the "Whiteboard Dashboard" section of the demo site; the canvas model is under "Whiteboard SaaS". Same package, no extra install.
+
+### `DashboardShell`
+```ts
+{ sidebar: ReactNode; topbar?: ReactNode; children: ReactNode }
+// sidebar+main grid, min-height 100vh, single column under 880px
+```
+
+### `Sidebar` / `SidebarBrand` / `activeSidebarHref`
+```ts
+interface SidebarItem { href: string; name: string; icon?: ReactNode; badge?: ReactNode }
+interface SidebarGroup { label: string; items: SidebarItem[] }
+// Sidebar
+{ brand?: ReactNode; groups: SidebarGroup[]; activeHref?: string; footer?: ReactNode;
+  renderLink?: (item, props: { className: string; children: ReactNode }) => ReactNode }
+// default renderLink is a plain <a>; Next users: (item, props) => <Link {...props} href={item.href} />
+// SidebarBrand
+{ href?: string; mark: ReactNode; eyebrow?: string; name: string; meta?: string; renderLink? }
+// activeSidebarHref(groups, pathname): string | undefined — longest matching href wins
+```
+
+### `TopBar` / `TopBarLink`
+```ts
+// TopBar
+{ crumb: ReactNode; actions?: ReactNode }   // sticky, blurred backdrop
+// TopBarLink — ButtonHTMLAttributes; quiet mono text button
+```
+
+### `Page` / `PageHeader` / `PageBlock` / `Eyebrow`
+```ts
+Page      { children }                          // grid gap 2rem + bottom padding for StickyBar
+PageHeader{ eyebrow: string; title: string; lede?: string }
+PageBlock { title: string; children }
+Eyebrow   { icon?: ReactNode; children }        // uppercase mono label
+```
+
+### `ContentCard` / `StatCard`
+```ts
+ContentCard { title?: ReactNode; children; style? }   // bordered surface, grid gap
+StatCard {
+  title: ReactNode; pill?: ReactNode; pillTone?: 'success'|'warning'|'danger'|'default'
+  value: ReactNode; sub?: ReactNode; children?: ReactNode; actions?: ReactNode
+}
+```
+
+### `FormGrid` / `FormActions` / `FilterTabs` / `ToggleChip` / `IconButton`
+```ts
+FormGrid    { cols?: 2 | 3; children }          // 1 column under 880px
+FormActions { children }                        // right-aligned action row
+FilterTabs<T extends string> { options: {value:T; label:string}[]; value: T; onChange(v:T) }
+ToggleChip  { active: boolean; onClick(); children }
+IconButton  { icon: ReactNode; label: string; variant?; onClick?; disabled?; loading? }
+```
+
+### `RowCard` / `RowSkeleton` / `ListSkeleton` / `ListHeaderRow`
+```ts
+RowCard      { title; detail?; leading?; actions? }
+RowSkeleton  { withDetail?: boolean; actionCount?: number }  // EXACT RowCard geometry
+ListSkeleton { rows?: number } & RowSkeletonProps
+ListHeaderRow{ title; actions? }
+```
+
+### `SearchBar` / `LoadMoreButton` / `ButtonLink`
+```ts
+SearchBar      { value: string; onChange(v: string); label?; placeholder? }  // full-width
+LoadMoreButton { cursor: string | null | undefined; loading: boolean; onClick(); label? } // null cursor -> renders nothing
+ButtonLink     { as?: ElementType; variant?: 'primary'|'secondary'|'danger' } & AnchorHTMLAttributes
+```
+
+### `NoteBar` / `StickyBar`
+```ts
+NoteBar   { tone?: 'info'|'success'|'error'|'muted'; onDismiss(); children }  // mount once, clear on navigation
+StickyBar { children }  // position: fixed bottom; left offset = --wb-dash-sidebar-w
+```
+
+### Dashboard tokens
+```css
+:root {
+  --wb-font-mono: ui-monospace, ...;
+  --wb-dash-sidebar-w: 232px;
+  --wb-dash-content-max: 760px;
+}
+```

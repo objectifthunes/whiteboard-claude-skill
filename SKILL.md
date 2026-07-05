@@ -1,6 +1,6 @@
 ---
 name: whiteboard-ui
-description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, a minimap, snap-to-grid, zoom controls, and ~55 themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, CardTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, Toolbar, AvatarBadge, Checkbox, Switch, Slider, NumberField, Surface, Tooltip, Kbd, Divider, Draggable, DraggableSurface, resetDraggables, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, CardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the live docs at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
+description: Use when picking up, wiring up, or designing with the `@objectifthunes/whiteboard` npm package — a pan/zoom whiteboard canvas for React with draggable floating panels, a minimap, snap-to-grid, zoom controls, and ~55 themed UI primitives. Triggers whenever the user mentions @objectifthunes/whiteboard, the whiteboard package, "objectifthunes whiteboard", or specific exports (WhiteboardShell, FloatingPanel, Minimap, ZoomBar, ConfirmDialog, PanelErrorBoundary, useWhiteboardStore, useWhiteboardLayout, computeWhiteboardFit, computeWhiteboardRectFocus, snapToWhiteboardGrid, WHITEBOARD_GRID, Button, ButtonRow, PanelCloseButton, Field, Label, Input, Textarea, Select, CoordGrid, CoordInput, Alert, Pill, Chip, TagRow, LoadingState, Stack, Inline, TitleRow, SplitLayout, IconText, PageShell, PageCard, PageTitle, CardTitle, SectionTitle, SectionDescription, MutedText, ItemCard, ItemList, List, PickerCard, PickerGrid, ChoiceCard, ChoiceGroup, GeneratingOverlay, EmptyState, VerticalToolbar, Toolbar, AvatarBadge, Checkbox, Switch, Slider, NumberField, Surface, Tooltip, Kbd, Divider, Draggable, DraggableSurface, resetDraggables, CanvasStage, OverlayIconButton, ImageThumb, Skeleton, LineSkeleton, TitleSkeleton, ButtonSkeleton, IconButtonSkeleton, InputSkeleton, SelectSkeleton, TextareaSkeleton, ChipSkeleton, ThumbSkeleton, AvatarSkeleton, CanvasSkeleton, PanelFormSkeleton, CardSkeleton, PickerGridSkeleton, ChoiceGroupSkeleton, PanelSection, PanelTitle, ThemeToggle, DashboardShell, Sidebar, SidebarBrand, activeSidebarHref, TopBar, TopBarLink, Page, PageHeader, PageBlock, Eyebrow, ContentCard, StatCard, FormGrid, FormActions, FilterTabs, ToggleChip, IconButton, RowCard, RowSkeleton, ListSkeleton, ListHeaderRow, SearchBar, LoadMoreButton, ButtonLink, NoteBar, StickyBar, DashboardShell, Sidebar, SidebarBrand, activeSidebarHref, TopBar, TopBarLink, Page, PageHeader, PageBlock, Eyebrow, ContentCard, StatCard, FormGrid, FormActions, FilterTabs, ToggleChip, IconButton, RowCard, RowSkeleton, ListSkeleton, ListHeaderRow, SearchBar, LoadMoreButton, ButtonLink, NoteBar, StickyBar, cn, belowPanel, usePanelRect), peer-dep wiring (zustand, react 18+), the live docs at objectifthunes.github.io/whiteboard-demo, or theming via `--wb-*` CSS tokens. Also fires on "match the whiteboard look", "floating panel canvas", "pan/zoom workspace UI", or any internal-tool / studio-canvas surface that should ship under the ObjectifThunes whiteboard system.
 ---
 
 # Picking up `@objectifthunes/whiteboard` in a blink
@@ -9,12 +9,12 @@ You are helping the user wire up, design with, or extend the `@objectifthunes/wh
 
 ## What it is
 
-- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.7.0`**).
+- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.8.0`**).
 - **Source repo:** `github.com/objectifthunes/whiteboard` (private).
 - **Live docs:** **https://objectifthunes.github.io/whiteboard-demo/** — multi-page Next.js docs site with a live demo + copy-pasteable code block for every export. **Always link the user there for prop details rather than re-deriving them.** The demo source is at `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
 - **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (~28 KB raw / 6 KB gzip) plus 41 KB / 10 KB JS.
 - **Voice:** light-default neutral surfaces, hairline borders, tiny font scale (`--wb-fs-*` starts at 0.64rem), gridded canvas with floating panels, soft `0 8px 24px` shadows. Dark theme via `[data-theme="dark"]`.
-- **Shape:** **6 whiteboard primitives + 4 store/hooks + ~50 UI primitives = ~60 exports** (see `references/EXPORTS.md`).
+- **Shape:** **6 whiteboard primitives + 4 store/hooks + ~50 UI primitives + a 25-export dashboard kit = ~85 exports** (see `references/EXPORTS.md`).
 
 ## The mental model — read first
 
@@ -26,11 +26,13 @@ The library has one big idea and one small idea.
 
 If the user wants "a Figma-like canvas with widgets" or "a studio workspace" or "movable inspector panels", this library is the right tool. If they want a single static modal or a plain form, skip the canvas and just pull `Button`, `Field`, `Input`, `Alert` etc. as a tiny UI kit — that path works too.
 
-## Two worked-example screens
+## Three worked-example screens
 
 | Screen | Shape | When to copy it |
 |---|---|---|
 | **Studio canvas** | `<WhiteboardShell>` with multiple `<FloatingPanel>`s laid out by `useWhiteboardLayout` | The user wants a multi-tool studio, inspector palette, or any surface where a user moves several editing panels around. Pattern: `useWhiteboardLayout({ widths, startX, y, gap })` → spread positions into panels. See `/components/canvas` and `/components/store` on the live docs. |
+| **Admin dashboard** | `<DashboardShell sidebar={<Sidebar/>} topbar={<TopBar/>}><Page>...` | The user wants an admin/back-office: grouped sidebar nav, sticky top bar, list pages with skeletons, recap tiles. Docs section "Whiteboard Dashboard". See the 0.8 section below. |
+| **Admin dashboard** | `<DashboardShell sidebar={<Sidebar/>} topbar={<TopBar/>}><Page>...` | The user wants an admin/back-office: grouped sidebar nav, sticky top bar, list pages with skeletons, recap tiles. Docs section "Whiteboard Dashboard". See the 0.8 section below. |
 | **Inline panel kit** | `<PageShell>` → `<PageCard>` → `<Stack>` of `<Field>` / `<Button>` / `<Alert>` | The user wants a single auth card, settings page, or tiny tool UI. Pattern: `PageShell` centres a card; `PageCard` is the bordered surface; `Stack` for vertical rhythm. **No WhiteboardShell needed.** See `/components/layout`. |
 
 ## The five-step wire-up
@@ -129,6 +131,38 @@ See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable impo
 **Skeletons:** `Skeleton`, `LineSkeleton`, `TitleSkeleton`, `ButtonSkeleton`, `IconButtonSkeleton`, `InputSkeleton`, `SelectSkeleton`, `TextareaSkeleton`, `ChipSkeleton`, `ThumbSkeleton`, `AvatarSkeleton`, `CanvasSkeleton`, `PanelFormSkeleton`, `CardSkeleton`, `PickerGridSkeleton`, `ChoiceGroupSkeleton`.
 
 **Panel-section helpers:** `PanelSection`, `PanelTitle`.
+
+**Dashboard kit (0.8):** `DashboardShell`, `Sidebar`, `SidebarBrand`, `activeSidebarHref`, `TopBar`, `TopBarLink`, `Page`, `PageHeader`, `PageBlock`, `Eyebrow`, `ContentCard`, `StatCard`, `FormGrid`, `FormActions`, `FilterTabs`, `ToggleChip`, `IconButton`, `RowCard`, `RowSkeleton`, `ListSkeleton`, `ListHeaderRow`, `SearchBar`, `LoadMoreButton`, `ButtonLink`, `NoteBar`, `StickyBar`.
+
+**Dashboard kit (0.8):** `DashboardShell`, `Sidebar`, `SidebarBrand`, `activeSidebarHref`, `TopBar`, `TopBarLink`, `Page`, `PageHeader`, `PageBlock`, `Eyebrow`, `ContentCard`, `StatCard`, `FormGrid`, `FormActions`, `FilterTabs`, `ToggleChip`, `IconButton`, `RowCard`, `RowSkeleton`, `ListSkeleton`, `ListHeaderRow`, `SearchBar`, `LoadMoreButton`, `ButtonLink`, `NoteBar`, `StickyBar`.
+
+## New in 0.8 — the dashboard kit
+
+Extracted from nocturne-admin (a production admin) into the SAME package. The live docs split into two sections: **"Whiteboard SaaS"** (the canvas/panel model) and **"Whiteboard Dashboard"** (this kit). When the user wants an admin/back-office/dashboard, reach for these instead of hand-rolling chrome:
+
+- **Chrome:** `DashboardShell {sidebar, topbar?, children}` is a sidebar+main grid (collapses under 880px). `Sidebar {brand?, groups, activeHref?, footer?, renderLink?}` renders grouped nav; items are `{href, name, icon?, badge?}`. `SidebarBrand {mark, eyebrow?, name, meta?}`. `TopBar {crumb, actions?}` + `TopBarLink` (a quiet mono button). All links are plain `<a>` by default — **Next.js users pass `renderLink={(item, props) => <Link {...props} href={item.href} />}`**.
+- **Active state:** `activeSidebarHref(groups, pathname)` picks the longest matching href, so `/covers/new` activates "New cover" and not also "Covers".
+- **Pages:** `Page` (rhythm container, reserves bottom padding for StickyBar), `PageHeader {eyebrow, title, lede?}`, `PageBlock {title, children}`, `Eyebrow` (uppercase mono label).
+- **Cards:** `ContentCard {title?}` (bordered surface), `StatCard {title, pill?, pillTone?, value, sub?, actions?}` — the recap/stat tile.
+- **Lists:** `RowCard {title, detail?, leading?, actions?}` with `RowSkeleton`/`ListSkeleton` sharing its EXACT geometry (zero layout shift on swap), `ListHeaderRow`, `SearchBar` (always full-width; filters go on their own line), `LoadMoreButton {cursor, loading, onClick}` (renders nothing when no next page), `ButtonLink` (anchor with wb-btn styles; `as={Link}` for routers).
+- **Forms & filters:** `FormGrid {cols?: 2|3}`, `FormActions`, `FilterTabs {options, value, onChange}` (active = primary Button), `ToggleChip {active}` (filled when active), `IconButton {icon, label}` (tooltip + aria-label).
+- **Feedback:** `NoteBar {tone?, onDismiss}` — mount ONCE in the shell, feed from a store, clear on navigation. `StickyBar` — viewport-fixed bottom bar (batch/cart summaries); fixed on purpose because sticky cannot escape a small parent; offsets past the sidebar via `--wb-dash-sidebar-w`.
+- **Tokens:** `--wb-font-mono`, `--wb-dash-sidebar-w` (232px), `--wb-dash-content-max` (760px) — override on `:root`.
+- Layout gaps inside these pages: use the existing `Inline` (justify start/between/end) and `Stack`; the kit deliberately does NOT re-add Row/Col.
+
+## New in 0.8 — the dashboard kit
+
+Extracted from nocturne-admin (a production admin) into the SAME package. The live docs split into two sections: **"Whiteboard SaaS"** (the canvas/panel model) and **"Whiteboard Dashboard"** (this kit). When the user wants an admin/back-office/dashboard, reach for these instead of hand-rolling chrome:
+
+- **Chrome:** `DashboardShell {sidebar, topbar?, children}` is a sidebar+main grid (collapses under 880px). `Sidebar {brand?, groups, activeHref?, footer?, renderLink?}` renders grouped nav; items are `{href, name, icon?, badge?}`. `SidebarBrand {mark, eyebrow?, name, meta?}`. `TopBar {crumb, actions?}` + `TopBarLink` (a quiet mono button). All links are plain `<a>` by default — **Next.js users pass `renderLink={(item, props) => <Link {...props} href={item.href} />}`**.
+- **Active state:** `activeSidebarHref(groups, pathname)` picks the longest matching href, so `/covers/new` activates "New cover" and not also "Covers".
+- **Pages:** `Page` (rhythm container, reserves bottom padding for StickyBar), `PageHeader {eyebrow, title, lede?}`, `PageBlock {title, children}`, `Eyebrow` (uppercase mono label).
+- **Cards:** `ContentCard {title?}` (bordered surface), `StatCard {title, pill?, pillTone?, value, sub?, actions?}` — the recap/stat tile.
+- **Lists:** `RowCard {title, detail?, leading?, actions?}` with `RowSkeleton`/`ListSkeleton` sharing its EXACT geometry (zero layout shift on swap), `ListHeaderRow`, `SearchBar` (always full-width; filters go on their own line), `LoadMoreButton {cursor, loading, onClick}` (renders nothing when no next page), `ButtonLink` (anchor with wb-btn styles; `as={Link}` for routers).
+- **Forms & filters:** `FormGrid {cols?: 2|3}`, `FormActions`, `FilterTabs {options, value, onChange}` (active = primary Button), `ToggleChip {active}` (filled when active), `IconButton {icon, label}` (tooltip + aria-label).
+- **Feedback:** `NoteBar {tone?, onDismiss}` — mount ONCE in the shell, feed from a store, clear on navigation. `StickyBar` — viewport-fixed bottom bar (batch/cart summaries); fixed on purpose because sticky cannot escape a small parent; offsets past the sidebar via `--wb-dash-sidebar-w`.
+- **Tokens:** `--wb-font-mono`, `--wb-dash-sidebar-w` (232px), `--wb-dash-content-max` (760px) — override on `:root`.
+- Layout gaps inside these pages: use the existing `Inline` (justify start/between/end) and `Stack`; the kit deliberately does NOT re-add Row/Col.
 
 ## New in 0.5 — draggable overlay chrome
 
