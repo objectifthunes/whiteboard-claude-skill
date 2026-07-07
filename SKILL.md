@@ -9,7 +9,7 @@ You are helping the user wire up, design with, or extend the `@objectifthunes/wh
 
 ## What it is
 
-- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.8.0`**).
+- **Package:** `@objectifthunes/whiteboard` (npm, public, current **`0.13.1`**).
 - **Source repo:** `github.com/objectifthunes/whiteboard` (private).
 - **Live docs:** **https://objectifthunes.github.io/whiteboard-demo/** — multi-page Next.js docs site with a live demo + copy-pasteable code block for every export. **Always link the user there for prop details rather than re-deriving them.** The demo source is at `github.com/objectifthunes/whiteboard-demo` (private, Next.js 16 + Turbopack + Tailwind 4, deploys to GH Pages on push to `main`).
 - **Built with:** React 18+, Zustand 4+. No CSS-in-JS, no Tailwind — ships a single `style.css` (~28 KB raw / 6 KB gzip) plus 41 KB / 10 KB JS.
@@ -108,7 +108,7 @@ Non-canvas surfaces skip the shell entirely:
 
 See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable import block and per-export prop signatures. Quick map:
 
-**Whiteboard primitives (6):** `WhiteboardShell`, `FloatingPanel`, `Minimap`, `ZoomBar`, `ConfirmDialog`, `PanelErrorBoundary`.
+**Whiteboard primitives (8):** `WhiteboardShell` (0.12 adds `contained`: bounded within a positioned parent instead of fixed to the viewport — embed in a page section/card), `FloatingPanel`, `CreatePanel` (0.9 — dashed creation panel: full-width primary Button, place beside a board), `SectionPanel` + `sectionPanelWidth` (0.10 — draggable board of static grid cards; gaps/paddings = grid unit so sections span whole plus signs; 0.11 adds loading/loadingCards: blurred skeleton state), `Minimap`, `ZoomBar`, `ConfirmDialog`, `PanelErrorBoundary`.
 
 **Store & hooks (4):** `useWhiteboardStore`, `useWhiteboardLayout`, `computeWhiteboardFit`, `computeWhiteboardRectFocus`. Helpers: `WHITEBOARD_GRID`, `snapToWhiteboardGrid`, `belowPanel`, `usePanelRect`, `cn`.
 
@@ -122,7 +122,7 @@ See [`references/EXPORTS.md`](references/EXPORTS.md) for the copy-pasteable impo
 
 **Typography:** `PageTitle`, `CardTitle`, `SectionTitle`, `SectionDescription`, `MutedText`, `Kbd`.
 
-**Lists / cards:** `ItemCard`, `ItemList`, `List`, `PickerCard`, `PickerGrid`, `ChoiceCard`, `ChoiceGroup`.
+**Lists / cards:** `ItemCard`, `ItemList`, `List`, `PickerCard`, `PickerGrid`, `ChoiceCard`, `ChoiceGroup`, `SelectList` (0.13 — bounded scrollable single/multi-select row list; one-line ellipsis rows, scales to hundreds; full-width hairline separators).
 
 **Navigation:** `VerticalToolbar`, `Toolbar` (horizontal sibling, `position="top"|"bottom"|"static"`, `end` slot), `AvatarBadge`.
 

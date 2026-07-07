@@ -11,6 +11,7 @@ import {
   // Whiteboard primitives
   WhiteboardShell,
   FloatingPanel,
+  CreatePanel,
   Minimap,
   ZoomBar,
   ConfirmDialog,
@@ -93,6 +94,7 @@ import {
   PickerGrid,
   ChoiceCard,
   ChoiceGroup,
+  SelectList,
 
   // Navigation
   VerticalToolbar,
@@ -200,6 +202,9 @@ import '@objectifthunes/whiteboard/style.css'
 | `showMinimap` | `boolean` | `true` |
 | `minimapLoading` | `boolean` | `false` |
 | `extraActions` | `ReactNode` | — |
+| `contained` (0.12) | `boolean` | `false` |
+
+`contained` renders the shell + zoom bar + minimap bounded inside a positioned parent (which must have a size) instead of fixed to the viewport — for embedding a whiteboard in a page section, card, or docs preview.
 
 ### `FloatingPanel`
 
@@ -215,6 +220,19 @@ import '@objectifthunes/whiteboard/style.css'
 | `focusMaxScale` | `number` | `1.5` |
 | `headerActions` | `ReactNode` | — |
 | `children` | `ReactNode` | — |
+
+### `CreatePanel` (0.9.0)
+
+| Prop | Type | Default |
+|---|---|---|
+| `title` | `ReactNode` | — |
+| `label` | `ReactNode` | — |
+| `defaultPosition` | `{ x: number; y: number }` | — |
+| `width` | `number` | `300` |
+| `onClick` | `() => void` | — |
+| `className` | `string` | — |
+
+Dashed-border creation panel (solid surface) holding one full-width primary Button. Place beside a board of resource cards, not inside it.
 
 ### `Minimap`
 
@@ -388,6 +406,25 @@ All take `HTMLAttributes<HTMLDivElement>`; render an animated shimmering bar/box
 Only one stylesheet, one entry point. No deep imports.
 
 ## New in 0.4.0
+
+### `SelectList` (0.13)
+
+| Prop | Type | Default |
+|---|---|---|
+| `items` | `SelectListItem[]` (`{ id, label, disabled? }`) | — |
+| `selectedIds` | `string[]` | — |
+| `onSelect` | `(id: string) => void` | — |
+| `loading` | `boolean` | `false` |
+| `visibleRows` | `number` | `7` |
+| `emptyText` | `ReactNode` | `'Nothing here yet.'` |
+| `className` | `string` | — |
+| `aria-label` | `string` | — |
+
+Bounded, scrollable single/multi-select row list. Rows render on one line and
+truncate with an ellipsis; height caps at `visibleRows` so hundreds of items
+scroll inside the box. Selection semantics live with the caller: pass `[id]`
+for single-select or any number of ids for multi-select — it marks matching
+rows active and reports clicks.
 
 ### `Checkbox` / `Switch`
 ```ts
